@@ -1,0 +1,212 @@
+     if (($request->has('filter')) and ($request->has('fields')) ){
+         echo "<br>...............<br>";
+         $fields = $request->fields;
+         $filters = $request->filter;
+         echo "Fields...:".$fields."<br>";
+         echo "Filters: ".$filters."<br>";
+         $c = explode(':', $filters);
+         $e = explode(',', $fields);
+        // $objInst=DB::table('car_models')-
+        //>select($e[0],$e[1])->where($c[0], $c[1]);
+         $objInst = $objInst->selectRaw($fields)->where($c[0], $c[1]);
+         $objInst=$objInst->get();
+         return $objInst;
+     }
+  
+  
+  
+  private function filter($request,$objInstance,$ref_method){
+        $objInst=$objInstance;
+        $objInst2=null;
+         
+    //................    
+        if($request->has('fields_brand')) {
+            $fields_model = $request->fields_model;
+            $objInst =$objInst->with($ref_method.':id,'.$fields_model);      
+        }  else { $objInst = $objInst->with($ref_method); }
+    //................
+    /*
+        if (($request->has('filter')) and ($request->has('fields')) ){
+            $fields = $request->fields;
+            $filters = $request->filter;
+            $c = explode(':', $filters);
+            $objInst = $objInst->selectRaw($fields)->where($c[0], $c[1]);
+            $objInst=$objInst->get();
+            return $objInst;
+        }
+     */   
+    //................
+        if($request->has('filter')) {
+           // $filters = explode(';', $request->filter);
+            $filters = $request->filter;
+            echo "Filters: ".$filters."<br>";
+            //foreach($filters as $key => $condition) {
+                //$c = explode(':', $condition);
+                $c = explode(':', $filters);
+                $objInst = $objInst->where($c[0], $c[1]);
+                //echo "ObjInst Filter:".$objInst."<br>";
+                
+          //  }
+        }
+    //................
+        if($request->has('fields')) {
+            
+            $fields = $request->fields;
+            echo "Fields...:".$fields."<br>";
+            $c = explode(',', $fields);
+        
+           
+            $objInst = $objInst->select($c[0],$c[1]);
+            //echo "ObjInst Fields:".$objInst."<br>";
+           // echo var_dump($objInst);
+           
+        } 
+        else {  $objInst = $objInst->with($ref_method);  }
+    //................
+        $objInst=$objInst->get();
+       
+        return $objInst;
+    }
+ 
+ 
+ /* 
+    let tmp='begin'+this.$store.state.item.id;
+    if (this.$store.state.transact.status!==tmp){
+     this.namebrand=this.$store.state.item.name;
+     this.$store.state.transact.status='begin'+this.$store.state.item.id;
+    }
+  */  
+//v-model="namebrand"
+
+     const datey = new Date(); 
+     let xx=datey.getMonth()+datey.getDate();
+      let rd1=Math.floor(Math.random() * 10);
+      let rd2=Math.floor(Math.random() * 10);
+      xx=xx+rd1+rd2+this.$store.state.item.id;
+        this.fileInputKey=xx;
+
+
+          const datey = new Date();
+      let xx=datey.getMonth()+datey.getDate();
+      let rd1=Math.floor(Math.random() * 10);
+      let rd2=Math.floor(Math.random() * 10);
+      this.tempname='updFile'+xx+rd1+rd2;
+  
+  <dmodal-cp modalname="modalUpd" title="Update brand">
+    <template slot="alerts">
+    <alert-cp stll="success" title="Transaction performed with success" :details="$store.state.transact" v-if="$store.state.transact.status == 'success'"></alert-cp>
+    <alert-cp stll="danger" title="error in Transaction" :details="$store.state.transact" v-if="$store.state.transact.status == 'error'"></alert-cp>
+    </template>
+    
+        <template slot="content">
+        <div class="form-group">
+        {{setUpdateValues()}}
+        <input-cp title="Name of brand" id="updName" id-help="updNameHelp" text-Help="Inform the Name of brand (Update)">
+    
+        <input type="text" class="form-control" id="updName" aria-describedby="updNameHelp"
+               placeholder="name of brand" v-model="namebrand">
+        </input-cp> 
+        </div>
+    
+        <div class="form-group">
+        <input-cp title="Image" id="updImage" id-help="updImageHelp" text-Help="Select  a Image no formato PNG">
+        <input type="file" class="form-control-file" id="UpdateImage" aria-describedby="UpdateImageHelp" placeholder="Select a Image" @change="loadImage($event)">
+        </input-cp>
+        </div>
+        </template>
+    
+                <template slot="footer">
+                    <button type="button" class="btn btn-primary" @click="printValues()">Update</button>
+                </template>
+    </dmodal-cp>
+//==============================================================
+
+<span v-if="titles[keyValue].typer == 'id'">{{value}}</span>
+<span v-if="titles[keyValue].typer == 'text'">{{value}}</span>
+<span v-if="titles[keyValue].typer == 'date'"> {{value}} </span>
+<span v-if="titles[keyValue].typer == 'image'">
+    <img :src="'/'+value" width="30" height="30">
+</span>
+   
+
+ <!-- = = = = = = = =  =  = [MODAL VIEW BRAND] =  -->
+
+ <modal-cp id="modalBrandView" title="View brand" >
+       <template slot="alerts"></template>
+       <template slot="content">
+           <input-cp title="ID">
+               
+           </input-cp>
+   
+           <input-cp title="Name of brand">
+               {{namebrand}}
+           </input-cp>
+   
+           <input-cp title="Image">
+           
+               <img :src="'/'+imagebrand" width="30" height="30">
+           </input-cp>
+   
+           <input-cp title="Created At">
+               {{createdbrand}}
+           </input-cp>
+       </template>
+       <template slot="footer">
+           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+       </template>
+      
+   </modal-cp>
+   
+   <!-- = = = = = = = =  =  =  =  =  =  =  =  -->
+
+<!-- = = = = = = = =  = [Modal Brand Remove] =  -->
+        <modal-cp id="modalBrandRemove" title="Delete brand">
+            <template slot=alerts>
+                <alert-cp tipo="success" title="Deleted  with success" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'success'"></alert-cp>
+                <alert-cp tipo="danger" title="error to delete proccess" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'error'"></alert-cp>
+            </template>
+            <template slot="content" v-if="$store.state.transact.status != 'success'">
+                <input-cp title="ID">
+                    <input type="text" class="form-control" :value="$store.state.item.id" disabled>
+                </input-cp>
+
+                <input-cp title="Name of brand">
+                    <input type="text" class="form-control" :value="$store.state.item.Name" disabled>
+                </input-cp>
+            </template>
+            <template slot="footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" @click="deleteh()" v-if="$store.state.transact.status != 'success'">Delete</button>
+            </template>
+        </modal-cp>
+ <!-- = = = = = = = =  =  =  =  =  =  =  =  -->
+
+<!-- = = = = = = = =  =  [Modal Update Brand] =  -->
+    <modal-cp id="modalBrandUpdate" title="Update brand">
+
+            <template slot="alerts">
+                <alert-cp tipo="success" title="Transaction performed with success" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'success'"></alert-cp>
+                <alert-cp tipo="danger" title="error in Transaction" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'error'"></alert-cp>
+            </template>
+
+            <template slot="content">
+                <div class="form-group">
+                    <input-cp title="Name of brand" id="UpdateName" id-help="UpdateNameHelp" texto-Help="Inform the Name of brand">
+                        <input type="text" class="form-control" id="UpdateName" aria-describedby="UpdateNameHelp" placeholder="Name of brand" v-model="$store.state.item.name">
+                    </input-cp>
+                </div>
+
+                <div class="form-group">
+                    <input-cp title="Image" id="UpdateImage" id-help="UpdateImageHelp" texto-Help="Select  a Image no formato PNG">
+                        <input type="file" class="form-control-file" id="UpdateImage" aria-describedby="UpdateImageHelp" placeholder="Select a Image" @change="carregarImage($event)">
+                    </input-cp>
+                </div>
+            </template>
+
+            <template slot="footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" @click="updateh()">Update</button>
+            </template>
+        </modal-cp>
+
+<!-- = = = = = = = =  =  =  =  =  =  =  =  -->

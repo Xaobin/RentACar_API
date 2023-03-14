@@ -1,0 +1,82 @@
+
+   
+
+<!-- = = = = = = = =  =  = [MODAL VIEW BRAND] =  -->
+<modal-cp id="modalBrandView" title="View brand">
+    
+    <template slot="alerts"></template>
+    <template slot="content">
+        <input-cp title="ID">
+            <input type="text" class="form-control" :value="$store.state.item.id" disabled>
+        </input-cp>
+
+        <input-cp title="Name of brand">
+            <input type="text" class="form-control" :value="$store.state.item.Name" disabled>
+        </input-cp>
+
+        <input-cp title="Image">
+            <img :src="'storage/'+$store.state.item.Image" v-if="$store.state.item.Image">
+        </input-cp>
+
+        <input-cp title="Created At">
+            <input type="text" class="form-control" :value="$store.state.item.created_at" disabled>
+        </input-cp>
+    </template>
+    <template slot="footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </template>
+   
+</modal-cp>
+<!-- = = = = = = = =  =  =  =  =  =  =  =  -->
+
+<!-- = = = = = = = =  = [Modal Brand Remove] =  -->
+        <modal-cp id="modalBrandRemove" title="Delete brand">
+            <template slot=alerts>
+                <alert-cp tipo="success" title="Transaction performed with success" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'success'"></alert-cp>
+                <alert-cp tipo="danger" title="error na Transaction" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'error'"></alert-cp>
+            </template>
+            <template slot="content" v-if="$store.state.transact.status != 'success'">
+                <input-cp title="ID">
+                    <input type="text" class="form-control" :value="$store.state.item.id" disabled>
+                </input-cp>
+
+                <input-cp title="Name of brand">
+                    <input type="text" class="form-control" :value="$store.state.item.Name" disabled>
+                </input-cp>
+            </template>
+            <template slot="footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" @click="deleteh()" v-if="$store.state.transact.status != 'success'">Delete</button>
+            </template>
+        </modal-cp>
+ <!-- = = = = = = = =  =  =  =  =  =  =  =  -->
+
+<!-- = = = = = = = =  =  [Modal Update Brand] =  -->
+    <modal-cp id="modalBrandUpdate" title="Update brand">
+
+            <template slot="alerts">
+                <alert-cp tipo="success" title="Transaction performed with success" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'success'"></alert-cp>
+                <alert-cp tipo="danger" title="error in Transaction" :detalhes="$store.state.transact" v-if="$store.state.transact.status == 'error'"></alert-cp>
+            </template>
+
+            <template slot="content">
+                <div class="form-group">
+                    <input-cp title="Name of brand" id="UpdateName" id-help="UpdateNameHelp" texto-Help="Inform the Name of brand">
+                        <input type="text" class="form-control" id="UpdateName" aria-describedby="UpdateNameHelp" placeholder="Name of brand" v-model="$store.state.item.name">
+                    </input-cp>
+                </div>
+
+                <div class="form-group">
+                    <input-cp title="Image" id="UpdateImage" id-help="UpdateImageHelp" texto-Help="Select  a Image no formato PNG">
+                        <input type="file" class="form-control-file" id="UpdateImage" aria-describedby="UpdateImageHelp" placeholder="Select a Image" @change="carregarImage($event)">
+                    </input-cp>
+                </div>
+            </template>
+
+            <template slot="footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" @click="updateh()">Update</button>
+            </template>
+        </modal-cp>
+
+<!-- = = = = = = = =  =  =  =  =  =  =  =  -->
